@@ -1,15 +1,17 @@
 'use client'
 
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/table";
-import {ChangeEvent, useEffect, useState} from "react";
+import {ChangeEvent, useContext, useEffect, useState} from "react";
 import axios from "@/lib/axios";
 import {Checkbox} from "@/components/checkbox";
-import {Field, Label} from "@/components/fieldset";
+import {Field, FieldGroup, Label} from "@/components/fieldset";
 import {Input} from "@/components/input";
 import {PencilSquareIcon, PlusIcon, TrashIcon} from "@heroicons/react/16/solid";
 import {Button} from "@/components/button";
 import AddStatistics from "@/components/personal/add-statistics";
 import PlayerForm from "@/components/personal/player-form";
+import LoggedContext from "@/app/context";
+import {Heading} from "@/components/heading";
 
 interface Player{
     id: number;
@@ -31,6 +33,7 @@ export default function PlayersIndex() {
     const [editFormType, setEditFormType] = useState<string>("");
     const [player, setPlayer] = useState<Player|undefined>(undefined);
     const [reload, setReload] = useState<boolean>(false);
+    const { logged } = useContext(LoggedContext)
 
     useEffect(() => {
         if (reload) {
@@ -61,22 +64,32 @@ export default function PlayersIndex() {
         }
     }
 
+    if (!logged) {
+        return (
+            <Heading level={1}>
+                Not logged in
+            </Heading>
+        )
+    }
+
     return (
         <>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                <Field className="mb-4">
-                    <Label>Search by name</Label>
-                    <Input onChange={handleSearchByName}/>
-                </Field>
-                <div className="flex justify-center">
+                <FieldGroup>
+                    <Field className="mb-4">
+                        <Label>Search by name</Label>
+                        <Input onChange={handleSearchByName}/>
+                    </Field>
+                </FieldGroup>
+                <FieldGroup className="flex justify-center">
                     <Button color="green" onClick={() => {
                         setPlayer(undefined)
                         setShowPlayerForm(true)
                     }}>
                         Add player
-                        <PlusIcon />
+                        <PlusIcon/>
                     </Button>
-                </div>
+                </FieldGroup>
             </div>
             <div className="grid grid-cols-1 gap-4">
                 <Table>
