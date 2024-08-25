@@ -1,22 +1,23 @@
 import React, {createContext, useState} from "react";
+import {UserDTO} from "@/types/UserDTO";
 
 type LoggedContextType = {
-    logged: boolean;
-    setLogged: (logged: boolean) => void;
+    user: UserDTO | null;
+    setUser: (user: UserDTO | null) => void;
 }
 
 const LoggedContext = createContext<LoggedContextType>({
-    logged: false,
-    setLogged: () => {}
+    user: null,
+    setUser: () => {}
 });
 
 export const LoggedProvider = ({children}: Readonly<{
     children: React.ReactNode;
 }>) => {
-    const [logged, setLogged] = useState(false);
+    const [user, setUser] = useState<UserDTO|null>(null);
 
     return (
-        <LoggedContext.Provider value={{ logged, setLogged }}>
+        <LoggedContext.Provider value={{ user, setUser }}>
             { children }
         </LoggedContext.Provider>
     )

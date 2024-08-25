@@ -6,29 +6,47 @@ import {useContext, useState} from "react";
 import {Button} from "@/components/button";
 import LoggedContext from "@/app/context";
 import {useRouter} from "next/navigation";
+import axios from "@/lib/axios";
+import { decodeJwt } from "jose";
+
+interface TokenInterface {
+    exp: string;
+    username: string;
+    id: string;
+}
 
 export default function Login() {
-    const [login, setLogin] = useState("");
+    const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const router = useRouter();
 
-    const loginValid = process.env.NEXT_PUBLIC_LOGIN;
-    const passwordValid = process.env.NEXT_PUBLIC_PASSWORD;
+    const {user, setUser} = useContext(LoggedContext);
 
-    const {logged, setLogged} = useContext(LoggedContext);
-
-    const handleLogin = () => {
-        if (logged) {
+    const handleLogin = async () => {
+        if (user) {
             return;
         }
 
-        if (login == loginValid && password == passwordValid) {
-            setLogged(true);
+        const res = await axios.post(`/user/login`, {
+            username: username,
+            password: password,
+        });
+
+        const decoded = decodeJwt(res.data.token);
+        console.log(decoded);
+
+        if (res.data.token) {
+            const decoded = decodeJwt<TokenInterface>(res.data.token);
+            setUser({
+                username: decoded.username,
+                id: decoded.id,
+                token: res.data.token
+            });
             router.push("/players")
             return
         }
 
-        setLogged(false);
+        setUser(null);
     }
 
     return (
@@ -39,7 +57,7 @@ export default function Login() {
             <FieldGroup>
                 <Field>
                     <Label>Login</Label>
-                    <Input value={login} onChange={(e) => setLogin(e.target.value)}/>
+                    <Input value={username} onChange={(e) => setUsername(e.target.value)}/>
                 </Field>
                 <Field>
                     <Label>Password</Label>

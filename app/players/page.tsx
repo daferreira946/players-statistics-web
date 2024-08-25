@@ -33,7 +33,7 @@ export default function PlayersIndex() {
     const [editFormType, setEditFormType] = useState<string>("");
     const [player, setPlayer] = useState<Player|undefined>(undefined);
     const [reload, setReload] = useState<boolean>(false);
-    const { logged } = useContext(LoggedContext)
+    const { user, setUser } = useContext(LoggedContext)
 
     useEffect(() => {
         if (reload) {
@@ -56,15 +56,33 @@ export default function PlayersIndex() {
     }
 
     const handleDelete = (playerId: number, playerName: string) => {
+        if (!user) {
+            return;
+        }
+
         const canDelete = confirm(`Do you really wanna delete ${playerName.toUpperCase()}`)
 
         if (canDelete) {
-            axios.delete(`/player/${playerId}`)
+            axios.delete(
+                `/player/${playerId}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${user.token}`
+                    }
+                }
+            )
                 .then(() => setReload(true))
+                .catch(
+                    err => {
+                        if (err.response?.status === 401) {
+                            setUser(null)
+                        }
+                    }
+                )
         }
     }
 
-    if (!logged) {
+    if (!user) {
         return (
             <Heading level={1}>
                 Not logged in

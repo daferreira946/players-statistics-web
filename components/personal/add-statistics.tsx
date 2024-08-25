@@ -2,18 +2,19 @@ import {Dialog, DialogActions, DialogBody, DialogDescription, DialogTitle} from 
 import {Field, Label} from "@/components/fieldset";
 import {Input} from "@/components/input";
 import {Button} from "@/components/button";
-import {Dispatch, SetStateAction, useState} from "react";
+import {Dispatch, SetStateAction, useContext, useState} from "react";
 import axios from "@/lib/axios";
+import LoggedContext from "@/app/context";
 
 interface EditFormsProps {
     showEditForm: boolean,
     setShowEditForm: Dispatch<SetStateAction<boolean>>
     type: string,
-    player: Player|undefined,
+    player: Player | undefined,
     setReload: Dispatch<SetStateAction<boolean>>
 }
 
-interface Player{
+interface Player {
     id: number;
     name: string;
     is_monthly: boolean;
@@ -33,16 +34,31 @@ export default function AddStatistics(
     const [quantity, setQuantity] = useState<number>(1);
     const [date, setDate] = useState<string>(formatedDateDefault);
 
+    const {user, setUser} = useContext(LoggedContext);
+
     function handleForm() {
+
+        if (!user) {
+            return;
+        }
+
         if (!player) {
             setShowEditForm(false)
             return
         }
 
-        axios.post(`/player/${player.id}/${type == "goals" ? "addGoal" : type == "assists" ? "addAssist" : ""}`, {
-            quantity: quantity,
-            date: date,
-        }).then(
+        axios.post(
+            `/player/${player.id}/${type == "goals" ? "addGoal" : type == "assists" ? "addAssist" : ""}`,
+            {
+                quantity: quantity,
+                date: date,
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${user.token}`
+                }
+            }
+        ).then(
             () => {
                 setQuantity(1)
                 setDate(formatedDateDefault)
@@ -50,6 +66,13 @@ export default function AddStatistics(
                 setShowEditForm(false)
             }
         )
+            .catch(
+                err => {
+                    if (err.response?.status === 401) {
+                        setUser(null)
+                    }
+                }
+            )
     }
 
     function handleCancel() {
@@ -67,11 +90,12 @@ export default function AddStatistics(
             <DialogBody>
                 <Field>
                     <Label>Quantity</Label>
-                    <Input name="quantity" placeholder="1" type="number" value={quantity} onChange={e => setQuantity(Number(e.target.value))} autoFocus />
+                    <Input name="quantity" placeholder="1" type="number" value={quantity}
+                           onChange={e => setQuantity(Number(e.target.value))} autoFocus/>
                 </Field>
                 <Field>
                     <Label>Date</Label>
-                    <Input name="date" type="date" value={date} onChange={e => setDate(e.target.value)} autoFocus />
+                    <Input name="date" type="date" value={date} onChange={e => setDate(e.target.value)} autoFocus/>
                 </Field>
             </DialogBody>
             <DialogActions>

@@ -42,7 +42,7 @@ interface HeaderProps {
 
 export default function Header( {setDarkTheme}: HeaderProps ) {
     const pathname = usePathname();
-    const {logged} = useContext(LoggedContext);
+    const {user} = useContext(LoggedContext);
 
     return (
         <header>
@@ -55,7 +55,7 @@ export default function Header( {setDarkTheme}: HeaderProps ) {
                 <NavbarDivider/>
                 <NavbarSection>
                     {navigation.map((item) => {
-                        if (logged || logged == item.logged) {
+                        if (user || !!user == item.logged) {
                             return (
                                 <NavbarItem key={item.name} href={item.url} current={pathname == item.url}>
                                     {item.name}

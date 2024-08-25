@@ -14,6 +14,8 @@
     "axios": "^1.7.2",
     "clsx": "^2.1.1",
     "framer-motion": "^11.3.8",
+    "jose": "^5.7.0",
+    "jsonwebtoken": "^9.0.2",
     "next": "14.2.5",
     "react": "^18",
     "react-dom": "^18"
