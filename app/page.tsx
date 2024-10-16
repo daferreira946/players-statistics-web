@@ -13,6 +13,7 @@ interface TopPlayer{
     name: string;
     quantity: number;
     is_monthly: boolean;
+    per_game: string;
 }
 
 interface Tops {
@@ -21,10 +22,12 @@ interface Tops {
 }
 
 export default function PlayersIndex() {
+    const dateDefault = new Date();
+    const formatedDateDefault = `${dateDefault.getFullYear()}-${(dateDefault.getMonth() + 1).toString().padStart(2, '0')}`
     const [tops, setTops] = useState<Tops>();
     const [limit, setLimit] = useState<number|null>(null);
-    const [monthYear, setMonthYear] = useState<string|null>(null);
-    const [onlyMonthly, setOnlyMonthly] = useState<boolean>(false);
+    const [monthYear, setMonthYear] = useState<string|null>(formatedDateDefault);
+    const [includeDiarist, setIncludeDiarist] = useState<boolean>(false);
 
     useEffect(() => {
         const timeOutId = setTimeout(
@@ -32,14 +35,14 @@ export default function PlayersIndex() {
                 params: {
                     limit: limit,
                     month_year: monthYear,
-                    only_monthly: onlyMonthly
+                    only_monthly: !includeDiarist
                 }
             })
                 .then(res => setTops(res.data)),
-            1000
+            500
         );
         return () => clearTimeout(timeOutId);
-    }, [limit, monthYear, onlyMonthly]);
+    }, [limit, monthYear, includeDiarist]);
 
     const handleChangeLimit = (event: ChangeEvent<HTMLInputElement>) => {
         setLimit(Number(event.target.value));
@@ -58,12 +61,12 @@ export default function PlayersIndex() {
 
                 <Field className="mb-4">
                     <Label>Filter month</Label>
-                    <Input type="month" onChange={handleChangeMonthYear}/>
+                    <Input type="month" onChange={handleChangeMonthYear} value={monthYear ? monthYear : ''}/>
                 </Field>
 
                 <Field className="mb-4">
-                    <Label className="block">Only monthly</Label>
-                    <Switch color="green" onChange={setOnlyMonthly}/>
+                    <Label className="block">Include diarist</Label>
+                    <Switch color="green" onChange={setIncludeDiarist}/>
                 </Field>
             </div>
             <div className="grid lg:grid-cols-2 grid-cols-1 gap-4">
@@ -72,6 +75,7 @@ export default function PlayersIndex() {
                         <TableRow>
                             <TableHeader>Name:</TableHeader>
                             <TableHeader className="text-center">Goals:</TableHeader>
+                            <TableHeader className="text-center">Per Game:</TableHeader>
                             <TableHeader className="text-center">Is Monthly:</TableHeader>
                         </TableRow>
                     </TableHead>
@@ -86,6 +90,9 @@ export default function PlayersIndex() {
                                     {topGoals.quantity}
                                 </TableCell>
                                 <TableCell className="text-center">
+                                    {topGoals.per_game}
+                                </TableCell>
+                                <TableCell className="text-center">
                                     <Checkbox checked={topGoals.is_monthly} color="green"/>
                                 </TableCell>
                             </TableRow>
@@ -97,6 +104,7 @@ export default function PlayersIndex() {
                         <TableRow>
                             <TableHeader>Name:</TableHeader>
                             <TableHeader className="text-center">Assists:</TableHeader>
+                            <TableHeader className="text-center">Per Game:</TableHeader>
                             <TableHeader className="text-center">Is Monthly:</TableHeader>
                         </TableRow>
                     </TableHead>
@@ -109,6 +117,9 @@ export default function PlayersIndex() {
                                 </TableCell>
                                 <TableCell className="text-center">
                                     {topAssists.quantity}
+                                </TableCell>
+                                <TableCell className="text-center">
+                                    {topAssists.per_game}
                                 </TableCell>
                                 <TableCell className="text-center">
                                     <Checkbox checked={topAssists.is_monthly} color="green" />

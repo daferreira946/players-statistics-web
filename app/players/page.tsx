@@ -33,7 +33,7 @@ export default function PlayersIndex() {
     const [editFormType, setEditFormType] = useState<string>("");
     const [player, setPlayer] = useState<Player|undefined>(undefined);
     const [reload, setReload] = useState<boolean>(false);
-    const { user, setUser } = useContext(LoggedContext)
+    const { user, setUser } = useContext(LoggedContext);
 
     useEffect(() => {
         if (reload) {
@@ -46,7 +46,7 @@ export default function PlayersIndex() {
                 }
             })
                 .then(res => setPlayers(res.data.players)),
-            1000
+            500
         );
         return () => clearTimeout(timeOutId);
     }, [name, reload]);

@@ -33,6 +33,11 @@ const navigation: Navigation[] = [
         name: "Login",
         url: "/login",
         logged: false
+    },
+    {
+        name: "Sheet",
+        url: "/sheet",
+        logged: true
     }
 ]
 
@@ -55,7 +60,7 @@ export default function Header( {setDarkTheme}: HeaderProps ) {
                 <NavbarDivider/>
                 <NavbarSection>
                     {navigation.map((item) => {
-                        if (user || !!user == item.logged) {
+                        if ((user && "Login" != item.name) || !!user == item.logged) {
                             return (
                                 <NavbarItem key={item.name} href={item.url} current={pathname == item.url}>
                                     {item.name}
