@@ -13,7 +13,7 @@ interface TopPlayer{
     name: string;
     quantity: number;
     is_monthly: boolean;
-    per_game: string;
+    per_game: number;
 }
 
 interface Tops {
@@ -90,7 +90,7 @@ export default function PlayersIndex() {
                                     {topGoals.quantity}
                                 </TableCell>
                                 <TableCell className="text-center">
-                                    {topGoals.per_game}
+                                    {topGoals.per_game.toFixed(2)}
                                 </TableCell>
                                 <TableCell className="text-center">
                                     <Checkbox checked={topGoals.is_monthly} color="green"/>
@@ -119,7 +119,7 @@ export default function PlayersIndex() {
                                     {topAssists.quantity}
                                 </TableCell>
                                 <TableCell className="text-center">
-                                    {topAssists.per_game}
+                                    {topAssists.per_game.toFixed(2)}
                                 </TableCell>
                                 <TableCell className="text-center">
                                     <Checkbox checked={topAssists.is_monthly} color="green" />
