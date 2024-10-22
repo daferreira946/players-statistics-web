@@ -11,6 +11,7 @@ import {Field, Fieldset, Label} from "@/components/fieldset";
 import {Select} from "@/components/select";
 import axios from "@/lib/axios";
 import {useRouter} from "next/navigation";
+import {getCompleteDate} from "@/helper/date-formatter";
 
 interface Player {
     id: number;
@@ -31,8 +32,7 @@ interface Stat {
 }
 
 export default function Sheet() {
-    const dateDefault = new Date();
-    const formatedDateDefault = `${dateDefault.getFullYear()}-${(dateDefault.getMonth() + 1).toString().padStart(2, '0')}-${dateDefault.getDate().toString().padStart(2, '0')}`
+    const formatedDateDefault = getCompleteDate()
     const {user} = useContext(LoggedContext);
     const [players, setPlayers] = useState<Player[]>([]);
     const [statsToSave, setStatsToSave] = useState<Stat[]>([]);

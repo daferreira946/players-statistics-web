@@ -6,6 +6,7 @@ import axios from "@/lib/axios";
 import {Field, Label} from "@/components/fieldset";
 import {Input} from "@/components/input";
 import {Heading} from "@/components/heading";
+import {getYearMonthDate} from "@/helper/date-formatter";
 
 interface Score {
     id: number;
@@ -22,13 +23,14 @@ interface GoalData {
 }
 
 export default function PlayersIndex() {
+    const formatedDateDefault = getYearMonthDate();
     const [assists, setAssists] = useState<Score[]>();
     const [goals, setGoals] = useState<Score[]>();
-    const [monthYear, setMonthYear] = useState<string | null>(null);
+    const [monthYear, setMonthYear] = useState<string|null>(formatedDateDefault);
 
     useEffect(() => {
         const timeOutId = setTimeout(
-            function() {
+            function () {
                 axios.get<AssistData>(`/assists`, {
                     params: {
                         month_year: monthYear

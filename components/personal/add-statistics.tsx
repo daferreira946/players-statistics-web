@@ -5,6 +5,7 @@ import {Button} from "@/components/button";
 import {Dispatch, SetStateAction, useContext, useState} from "react";
 import axios from "@/lib/axios";
 import LoggedContext from "@/app/context";
+import {getCompleteDate} from "@/helper/date-formatter";
 
 interface EditFormsProps {
     showEditForm: boolean,
@@ -29,8 +30,7 @@ export default function AddStatistics(
         setReload
     }: EditFormsProps
 ) {
-    const dateDefault = new Date();
-    const formatedDateDefault = `${dateDefault.getFullYear()}-${(dateDefault.getMonth() + 1).toString().padStart(2, '0')}-${dateDefault.getDate().toString().padStart(2, '0')}`
+    const formatedDateDefault = getCompleteDate();
     const [quantity, setQuantity] = useState<number>(1);
     const [date, setDate] = useState<string>(formatedDateDefault);
 

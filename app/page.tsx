@@ -8,6 +8,7 @@ import {Field, Label} from "@/components/fieldset";
 import {Input} from "@/components/input";
 import { StarIcon } from "@heroicons/react/16/solid";
 import {Switch} from "@/components/switch";
+import {getYearMonthDate} from "@/helper/date-formatter";
 
 interface TopPlayer{
     name: string;
@@ -22,8 +23,7 @@ interface Tops {
 }
 
 export default function PlayersIndex() {
-    const dateDefault = new Date();
-    const formatedDateDefault = `${dateDefault.getFullYear()}-${(dateDefault.getMonth() + 1).toString().padStart(2, '0')}`
+    const formatedDateDefault = getYearMonthDate();
     const [tops, setTops] = useState<Tops>();
     const [limit, setLimit] = useState<number|null>(null);
     const [monthYear, setMonthYear] = useState<string|null>(formatedDateDefault);
