@@ -59,7 +59,7 @@ export default function PlayersIndex() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 <Field className="mb-4">
                     <Label>Filter month</Label>
-                    <Input type="month" onChange={handleChangeMonthYear}/>
+                    <Input type="month" onChange={handleChangeMonthYear} value={monthYear ? monthYear : ''}/>
                 </Field>
             </div>
             <div className="grid lg:grid-cols-2 grid-cols-1 gap-4">
