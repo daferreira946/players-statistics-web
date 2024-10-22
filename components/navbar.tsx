@@ -90,7 +90,3 @@ export const NavbarItem = forwardRef(function NavbarItem(
     </span>
   )
 })
-
-export function NavbarLabel({ className, ...props }: React.ComponentPropsWithoutRef<'span'>) {
-  return <span {...props} className={clsx(className, 'truncate')} />
-}

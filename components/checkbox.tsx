@@ -2,47 +2,6 @@ import * as Headless from '@headlessui/react'
 import clsx from 'clsx'
 import type React from 'react'
 
-export function CheckboxGroup({ className, ...props }: React.ComponentPropsWithoutRef<'div'>) {
-  return (
-    <div
-      data-slot="control"
-      {...props}
-      className={clsx(
-        className,
-        // Basic groups
-        'space-y-3',
-        // With descriptions
-        'has-[[data-slot=description]]:space-y-6 [&_[data-slot=label]]:has-[[data-slot=description]]:font-medium'
-      )}
-    />
-  )
-}
-
-export function CheckboxField({
-  className,
-  ...props
-}: { className?: string } & Omit<Headless.FieldProps, 'className'>) {
-  return (
-    <Headless.Field
-      data-slot="field"
-      {...props}
-      className={clsx(
-        className,
-        // Base layout
-        'grid grid-cols-[1.125rem_1fr] items-center gap-x-4 gap-y-1 sm:grid-cols-[1rem_1fr]',
-        // Control layout
-        '[&>[data-slot=control]]:col-start-1 [&>[data-slot=control]]:row-start-1 [&>[data-slot=control]]:justify-self-center',
-        // Label layout
-        '[&>[data-slot=label]]:col-start-2 [&>[data-slot=label]]:row-start-1 [&>[data-slot=label]]:justify-self-start',
-        // Description layout
-        '[&>[data-slot=description]]:col-start-2 [&>[data-slot=description]]:row-start-2',
-        // With description
-        '[&_[data-slot=label]]:has-[[data-slot=description]]:font-medium'
-      )}
-    />
-  )
-}
-
 const base = [
   // Basic layout
   'relative isolate flex size-[1.125rem] items-center justify-center rounded-[0.3125rem] sm:size-4',

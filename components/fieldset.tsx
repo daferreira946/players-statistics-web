@@ -57,32 +57,3 @@ export function Label({ className, ...props }: { className?: string } & Omit<Hea
     />
   )
 }
-
-export function Description({
-  className,
-  ...props
-}: { className?: string } & Omit<Headless.DescriptionProps, 'className'>) {
-  return (
-    <Headless.Description
-      data-slot="description"
-      {...props}
-      className={clsx(
-        className,
-        'text-base/6 text-zinc-500 data-[disabled]:opacity-50 sm:text-sm/6 dark:text-zinc-400'
-      )}
-    />
-  )
-}
-
-export function ErrorMessage({
-  className,
-  ...props
-}: { className?: string } & Omit<Headless.DescriptionProps, 'className'>) {
-  return (
-    <Headless.Description
-      data-slot="error"
-      {...props}
-      className={clsx(className, 'text-base/6 text-red-600 data-[disabled]:opacity-50 sm:text-sm/6 dark:text-red-500')}
-    />
-  )
-}
