@@ -9,7 +9,7 @@ import {Heading} from "@/components/heading";
 import {getYearMonthDate} from "@/helper/date-formatter";
 
 interface Score {
-    id: number;
+    quantity: number;
     date: string;
     player_name: string;
 }
@@ -69,14 +69,18 @@ export default function PlayersIndex() {
                         <TableHead>
                             <TableRow>
                                 <TableHeader>Name:</TableHeader>
+                                <TableHeader className="text-center">Quantity:</TableHeader>
                                 <TableHeader className="text-center">Date:</TableHeader>
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {goals?.map((item) => (
-                                <TableRow key={item.id}>
+                            {goals?.map((item, index) => (
+                                <TableRow key={index}>
                                     <TableCell className="font-medium flex justify-start">
                                         {item.player_name.toUpperCase()}
+                                    </TableCell>
+                                    <TableCell className="text-center">
+                                        {item.quantity}
                                     </TableCell>
                                     <TableCell className="text-center">
                                         {item.date}
@@ -92,14 +96,18 @@ export default function PlayersIndex() {
                         <TableHead>
                             <TableRow>
                                 <TableHeader>Name:</TableHeader>
+                                <TableHeader className="text-center">Quantity:</TableHeader>
                                 <TableHeader className="text-center">Date:</TableHeader>
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {assists?.map((item) => (
-                                <TableRow key={item.id}>
+                            {assists?.map((item, index) => (
+                                <TableRow key={index}>
                                     <TableCell className="font-medium flex justify-start">
                                         {item.player_name.toUpperCase()}
+                                    </TableCell>
+                                    <TableCell className="text-center">
+                                        {item.quantity}
                                     </TableCell>
                                     <TableCell className="text-center">
                                         {item.date}
