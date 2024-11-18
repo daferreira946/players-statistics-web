@@ -32,9 +32,6 @@ export default function Login() {
             password: password,
         });
 
-        const decoded = decodeJwt(res.data.token);
-        console.log(decoded);
-
         if (res.data.token) {
             const decoded = decodeJwt<TokenInterface>(res.data.token);
             setUser({

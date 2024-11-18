@@ -35,7 +35,14 @@ export default function Sheet() {
     const formatedDateDefault = getCompleteDate()
     const {user} = useContext(LoggedContext);
     const [players, setPlayers] = useState<Player[]>([]);
-    const [statsToSave, setStatsToSave] = useState<Stat[]>([]);
+    const [statsToSave, setStatsToSave] = useState<Stat[]>(() => {
+        const saved = localStorage.getItem("stats")
+        if (!saved) {
+            return [];
+        }
+        const initialValue = JSON.parse(saved)
+        return initialValue || []
+    });
     const [date, setDate] = useState<string>(formatedDateDefault);
     const router = useRouter();
 
@@ -43,6 +50,10 @@ export default function Sheet() {
         axios.get<Players>(`/players`)
             .then(res => setPlayers(res.data.players))
     }, []);
+
+    useEffect(() => {
+        localStorage.setItem("stats", JSON.stringify(statsToSave));
+    }, [statsToSave]);
 
     if (!user) {
         return (
@@ -121,7 +132,10 @@ export default function Sheet() {
                 }
             }
         ).then(
-            () => router.push("/")
+            () => {
+                localStorage.removeItem("stats")
+                router.push("/")
+            }
         );
     }
 
