@@ -36,12 +36,9 @@ export default function Sheet() {
     const {user} = useContext(LoggedContext);
     const [players, setPlayers] = useState<Player[]>([]);
     const [statsToSave, setStatsToSave] = useState<Stat[]>(() => {
-        const saved = localStorage.getItem("stats")
-        if (!saved) {
-            return [];
-        }
-        const initialValue = JSON.parse(saved)
-        return initialValue || []
+        if (typeof window === 'undefined') return [];
+        const saved = localStorage.getItem("stats");
+        return saved ? JSON.parse(saved) : [];
     });
     const [date, setDate] = useState<string>(formatedDateDefault);
     const router = useRouter();
